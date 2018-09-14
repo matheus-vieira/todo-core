@@ -8,7 +8,5 @@ namespace ToDoMvc.Services
     public interface IToDoItemService
     {
         Task<IEnumerable<ToDoItem>> GetIncompleteItemsAsync();
-        //Task<bool> AddItemAsync(NewToDoItem newToDoItem);
-        Task<bool> MarkDoneAsync(Guid id);
     }
 }
