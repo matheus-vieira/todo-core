@@ -3,41 +3,46 @@ $(document).ready(function () {
     $('#add-item-button').on('click', addItem());
     $('.done-checkbox').on('click', markDone);
 
-
-    var $itemError = $('#add-item-error');
-
+    /**
+     * IIFE - Imediately Invoked Function Expression
+    *  Ou seja, função executada imediatamente
+                                 "automagicamente"
+     */
     var postError = (function () {
-        return function (data) {
+        var $itemError = $('#add-item-error');
+        function erroOnPost(data) {
             var error = data.statusText;
             if (data.responseJSON) {
-                var key = Object.keys(data.responseJSON)[0];
+                var key = Object
+                    .keys(data.responseJSON)[0];
                 error = data.responseJSON[key];
             }
             $itemError.text(error).show();
         }
+        return {
+            hide: () => $itemError.hide(),
+            onError: erroOnPost
+        };
     })();
 
     function addItem() {
         var $newTitle = $('#add-item-title');
         var $newDueAt = $('#add-item-due-at');
         return function () {
-            $itemError.hide();
-            $.post(
-                '/ToDo/AddItem',
+            postError.hide();
+            $.post('/ToDo/AddItem',
                 {
                     title: $newTitle.val(),
                     dueAt: $newDueAt.val()
                 },
                 () => window.location = '/ToDo'
-            ).fail(postError);
+            ).fail(postError.onError);
         };
     }
-
     function markDone(ev) {
         // ev.target === checkbox
         ev.target.disabled = true;
-
-        $itemError.hide();
+        postError.hide();
         $.post('/ToDo/MarkDone',
             { id: ev.target.name },
             function () {
@@ -46,7 +51,7 @@ $(document).ready(function () {
                     .parentElement; // tr
                 row.classList.add('done');
             }
-        ).fail(postError);
+        ).fail(postError.onError);
     }
 });
 

@@ -46,10 +46,12 @@ namespace ToDoMvc.Controllers
         {
             if (id == Guid.Empty) return BadRequest();
 
-            var succesfull = await _toDoItemService.MarkDoneAsync(id);
+            var succesfull = await _toDoItemService
+                .MarkDoneAsync(id);
 
             if (!succesfull)
-                return BadRequest(new { error = "Could not mark item as done" });
+                return BadRequest(
+                    new { error = "Could not mark item as done" });
             return Ok();
         }
     }
