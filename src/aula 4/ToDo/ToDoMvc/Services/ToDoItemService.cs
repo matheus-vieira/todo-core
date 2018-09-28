@@ -45,7 +45,7 @@ namespace ToDoMvc.Services
         public async Task<bool> MarkDoneAsync(Guid id)
         {
             var item = await _context.Items
-                .FirstAsync(i => i.Id == id);
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             if (item == null) return false;
 

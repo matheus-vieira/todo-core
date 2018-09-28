@@ -1,7 +1,7 @@
 ﻿// Write your JavaScript code.
 $(document).ready(function () {
     $('#add-item-button').on('click', addItem());
-    $('.done-checkbox').on('click', markDone);
+    $('.done').on('click', markDone);
 
     /**
      * IIFE - Imediately Invoked Function Expression
@@ -40,7 +40,7 @@ $(document).ready(function () {
         };
     }
     function markDone(ev) {
-        // ev.target === checkbox
+        // ev.target === button
         ev.target.disabled = true;
         postError.hide();
         $.post('/ToDo/MarkDone',
