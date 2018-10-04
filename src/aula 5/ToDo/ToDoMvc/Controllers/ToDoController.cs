@@ -54,17 +54,5 @@ namespace ToDoMvc.Controllers
                     new { error = "Could not mark item as done" });
             return Ok();
         }
-
-        public async Task<IActionResult> GetItem(Guid id)
-        {
-            if (id == Guid.Empty) return BadRequest();
-
-            var item = await _toDoItemService.Get(id);
-
-            if (item == null)
-                return BadRequest(
-                    new { error = "Could retrieve this item" });
-            return Ok(item);
-        }
     }
 }

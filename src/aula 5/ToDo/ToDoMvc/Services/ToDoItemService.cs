@@ -56,11 +56,5 @@ namespace ToDoMvc.Services
 
             return saveResult == 1;
         }
-
-        public async Task<ToDoItem> Get(Guid id)
-        {
-            return await _context.Items
-                .FirstOrDefaultAsync(i => i.Id == id);
-        }
     }
 }

@@ -1,5 +1,8 @@
 ﻿// Write your JavaScript code.
 $(document).ready(function () {
+    $('#add-item-button').on('click', addItem());
+    $('.done').on('click', markDone);
+
     /**
      * IIFE - Imediately Invoked Function Expression
     *  Ou seja, função executada imediatamente
@@ -50,53 +53,6 @@ $(document).ready(function () {
             }
         ).fail(postError.onError);
     }
-
-    var edit = (function () {
-        var $editTitle = $('#edit-item-title');
-        var $editDueAt = $('#edit-item-due-at');
-        var $editId = $('#edit-item-id');
-        var $modal = $('#edit-item-modal');
-
-        function edit(ev) {
-            // ev.target === button
-            ev.target.disabled = true;
-            postError.hide();
-            $.post('/ToDo/GetItem',
-                { id: ev.target.name },
-                function(item) {
-                    $editTitle.val(item.title);
-                    $editDueAt.val(item.dueAt.split('T')[0]);
-                    $editId.val(item.id);
-                    $modal.modal('show');
-                    ev.target.disabled = false;
-                }
-            ).fail(postError.onError);
-            ^
-        }
-
-        function save() {
-            postError.hide();
-            $.post('/ToDo/EditItem',
-                {
-                    id: $editId.val(),
-                    title: $editTitle.val(),
-                    dueAt: $editDueAt.val()
-                },
-                () => $modal.modal('close')
-            ).fail(postError.onError);
-        };
-
-        return {
-            editItem: edit,
-            saveItem: save
-        }
-    })();
-
-    $('#add-item-button').on('click', addItem());
-    $('#edit-item-button').on('click', edit.saveItem);
-
-    $('.done').on('click', markDone);
-    $('.edit').on('click', edit.editItem);
 });
 
 /**
@@ -110,28 +66,25 @@ $(document).ready(function () {
  *   para Editar (Edit) e Marcar como pronto (Done)
  * )
  *
- *  Layout modal
- *  
- *
  * Ajustar a funcionalidade Marcar como Pronto:
- *   Remover o checkbox da primeira coluna (ok)
- *   Adicionar um botão com o texto "Done" (ok)
- *   Adicionar no botão criado a classe "done" (ok)
+ *   Remover o checkbox da primeira coluna
+ *   Adicionar um botão com o texto "Done"
+ *   Adicionar no botão criado a classe "done"
  *   Alterar no javascript para adicionar o evento de click
- *     na classe "done", não mais na classe "done-checkbox" (ok)
- *   Testar as alterações (ok)
+ *     na classe "done", não mais na classe "done-checkbox"
+ *   Testar as alterações
  *
  * Criar a funcionalidade Editar:
- *   Adicionar um botão com o texto "Edit" (ok)
- *   Adicionar no botão criado a classe "edit" (ok)
+ *   Adicionar um botão com o texto "Edit"
+ *   Adicionar no botão criado a classe "edit"
  *   Adicionar no javascript o evento de click
- *     na classe "edit" (ok)
- *   Adicionar no javascript uma função para edição do item (ok)
+ *     na classe "edit"
+ *   Adicionar no javascript uma função para edição do item
  *     Função será chamada "edit"
- *       A função recebe como parametro um objeto com as informações do evento (ok)
+ *       A função recebe como parametro um objeto com as informações do evento
  *       Requisição para:
- *          url: "/ToDo/GetItem" (ok)
- *         Objeto: { id: ev.target.name }. (ok)
+ *          url: "/ToDo/GetItem"
+ *         Objeto: { id: ev.target.name }.
  *         Sucesso:
  *            A função recebe como parametro um objeto com as informações do item
  *              Item: { id: guid, title: string, dueAt: datetime }
