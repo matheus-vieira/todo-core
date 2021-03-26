@@ -1,6 +1,9 @@
-image:
-  file: .gitpod.Dockerfile
+image: gitpod/workspace-dotnet-vnc
 
 tasks:
-  - init: dotnet run
+  - init: dotnet build
     command: dotnet run
+
+vscode:
+  extensions:
+    - muhammad-sammy.csharp
